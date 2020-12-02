@@ -3,6 +3,5 @@ module Main where
 import Lib
 
 main :: IO ()
--- main = someFunc
--- main = day01
-main = day02
+-- main = interact day01
+main = interact day02

@@ -18,15 +18,13 @@ findThree expenses = head $ do
   guard  $ x + y + z == 2020
   return $ x * y * z
 
-day01 :: IO ()
-day01 = interact f
-  where
-    f input = "Product of two:   " ++ show productOfTwo ++ "\n"
+day01 :: String -> String
+day01 input = "Product of two:   " ++ show productOfTwo ++ "\n"
            ++ "Product of three: " ++ show productOfThree ++ "\n"
-      where
-        expenses = map read $ lines input :: [Integer]
-        productOfTwo = findTwo expenses
-        productOfThree = findThree expenses
+  where
+    expenses = map read $ lines input :: [Integer]
+    productOfTwo = findTwo expenses
+    productOfThree = findThree expenses
 
 -- Day 2
 data Password = Password { minCount :: Int
@@ -56,12 +54,10 @@ isLegal' :: Password -> Bool
 isLegal' (Password minCount maxCount letter password)
   = ((password !! (minCount - 1)) == letter) /= ((password !! (maxCount - 1)) == letter)
 
-day02 :: IO ()
-day02 = interact f
-  where
-    f input = "Legal passwords:     " ++ show legalPasswordCount  ++ "\n"
+day02 :: String -> String
+day02 input = "Legal passwords:     " ++ show legalPasswordCount  ++ "\n"
            ++ "New legal passwords: " ++ show legalPasswordCount' ++ "\n"
-      where
-        passwords = map parsePassword $ lines input
-        legalPasswordCount  = length . filter isLegal  $ passwords
-        legalPasswordCount' = length . filter isLegal' $ passwords
+  where
+    passwords = map parsePassword $ lines input
+    legalPasswordCount  = length . filter isLegal  $ passwords
+    legalPasswordCount' = length . filter isLegal' $ passwords
