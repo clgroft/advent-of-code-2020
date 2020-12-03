@@ -14,7 +14,6 @@ import           Data.Array                     ( Array
                                                 , assocs
                                                 , elems
                                                 )
-import           Debug.Trace                    ( trace )
 
 -- Day 1
 findTwo :: [Integer] -> Integer
@@ -89,21 +88,9 @@ day02 input =
 
 -- Day 3
 type TobogganField = Array (Int, Int) Char
--- type TobogganField = [String]
-
-isTree :: Char -> Bool
-isTree c = trace [c] ('#' == c)
-
-getFromField :: TobogganField -> (Int, Int) -> Char
-getFromField field idx = trace (show idx) (field ! idx)
 
 numTrees :: Int -> Int -> TobogganField -> Int
-numTrees down right field =
-  length . filter isTree . map (getFromField field) $ idxs
--- numTrees down right field =
---   length . filter (== '#') . map (\(d, r) -> (field !! d) !! r) $ trace
---     (show idxs)
---     idxs
+numTrees down right field = length . filter ('#' ==) . map (field !) $ idxs
  where
   (_, (ht, wd)) = bounds field
   height        = ht + 1
@@ -119,12 +106,7 @@ fieldFromLines lns = listArray ((0, 0), (ht, wd)) $ concat lns
 
 day03 :: String -> String
 day03 input =
-  "Field bounds: "
-    ++ show (bounds field)
-  --   ++ "\nEntire field: "
-  --   ++ (show $ elems field)
-    -- ++ (show $ assocs field)
-    ++ "\nNumber of trees: "
+  "Number of trees: "
     ++ show trees
     ++ "\nProduct over all slopes: "
     ++ show treesProduct
@@ -138,7 +120,3 @@ day03 input =
   trees4       = numTrees 1 7 field
   trees5       = numTrees 2 1 field
   treesProduct = trees * trees2 * trees3 * trees4 * trees5
-  -- (_, (ht, wd)) = bounds field
-  -- height        = ht + 1
-  -- width         = wd + 1
-  -- nextCell (d, r) = (d + 1, (r + 3) `mod` width)
