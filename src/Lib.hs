@@ -2,18 +2,20 @@ module Lib
   ( day01
   , day02
   , day03
+  , day04
   ) where
 
+import           Data.Char                      ( isDigit
+                                                , isHexDigit
+                                                )
 import           Data.List                      ( tails )
 import           Control.Monad                  ( guard )
 import           Data.Array                     ( Array
                                                 , listArray
                                                 , (!)
                                                 , bounds
-                                                , indices
-                                                , assocs
-                                                , elems
                                                 )
+-- import           Debug.Trace                    ( trace )
 
 -- Day 1
 findTwo :: [Integer] -> Integer
@@ -120,3 +122,117 @@ day03 input =
   trees4       = numTrees 1 7 field
   trees5       = numTrees 2 1 field
   treesProduct = trees * trees2 * trees3 * trees4 * trees5
+
+-- Day 4
+splitIntoParagraphs :: String -> [String]
+splitIntoParagraphs input = makeParagraphs $ dropWhile (== []) inputLines
+ where
+  inputLines = lines input
+  makeParagraphs []    = []
+  makeParagraphs lines = paragraph : makeParagraphs rest
+   where
+    (firstLines, remainder) = span (/= "") lines
+    paragraph               = unwords firstLines
+    rest                    = dropWhile (== "") remainder
+
+birthYear, issueYear, expirationYear, height, hairColor, eyeColor, passportID
+  :: String
+birthYear = "byr"
+issueYear = "iyr"
+expirationYear = "eyr"
+height = "hgt"
+hairColor = "hcl"
+eyeColor = "ecl"
+passportID = "pid"
+-- countryID = "cid"
+
+credentialFieldNames :: [String]
+credentialFieldNames =
+  [ birthYear
+  , issueYear
+  , expirationYear
+  , height
+  , hairColor
+  , eyeColor
+  , passportID
+  ]
+
+data PassportField = PassportField
+  { fieldName  :: String
+  , fieldValue :: String
+  }
+  deriving Show
+
+parsePassportField :: String -> PassportField
+parsePassportField str = PassportField name value
+ where
+  (name, rest) = span (/= ':') str
+  value        = tail rest
+
+type Passport = [PassportField]
+
+parsePassport :: String -> Passport
+parsePassport str = map parsePassportField $ words str
+
+isFirstPassValidCredentials :: Passport -> Bool
+isFirstPassValidCredentials passport = all
+  (\name -> any (\field -> fieldName field == name) passport)
+  credentialFieldNames
+
+isNumberInRange :: Int -> Int -> String -> Bool
+isNumberInRange minNum maxNum str =
+  all isDigit str && minNum <= val && val <= maxNum
+  where val = read str :: Int
+
+isValidBirthYear :: String -> Bool
+isValidBirthYear = isNumberInRange 1920 2002
+
+isValidIssueYear :: String -> Bool
+isValidIssueYear = isNumberInRange 2010 2020
+
+isValidExpirationYear :: String -> Bool
+isValidExpirationYear = isNumberInRange 2020 2030
+
+isValidHeight :: String -> Bool
+isValidHeight str = case unit of
+  "cm" -> isNumberInRange 150 193 cnt
+  "in" -> isNumberInRange 59 76 cnt
+  _    -> False
+  where (cnt, unit) = span isDigit str
+
+isValidHairColor :: String -> Bool
+isValidHairColor str =
+  length str == 7 && head str == '#' && all isHexDigit (tail str)
+
+isValidEyeColor :: String -> Bool
+isValidEyeColor = (`elem` ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"])
+
+isValidPassportID :: String -> Bool
+isValidPassportID str = length str == 9 && all isDigit str
+
+isValidField :: PassportField -> Bool
+isValidField (PassportField name value) = case name of
+  "byr" -> isValidBirthYear value
+  "iyr" -> isValidIssueYear value
+  "eyr" -> isValidExpirationYear value
+  "hgt" -> isValidHeight value
+  "hcl" -> isValidHairColor value
+  "ecl" -> isValidEyeColor value
+  "pid" -> isValidPassportID value
+  "cid" -> True
+  _     -> False
+
+day04 :: String -> String
+day04 input =
+  "Number of valid credentials: "
+    ++ show numValid
+    ++ "\n"
+    ++ "Number of truly valid credentials: "
+    ++ show numTrulyValid
+    ++ "\n"
+ where
+  passports                 = map parsePassport $ splitIntoParagraphs input
+  firstPassValidCredentials = filter isFirstPassValidCredentials passports
+  numValid                  = length firstPassValidCredentials
+  numTrulyValid =
+    length . filter (all isValidField) $ firstPassValidCredentials
