@@ -6,7 +6,6 @@ module Day07
 
 import           Data.List                      ( foldl' )
 import           Data.List.Split                ( chunksOf )
-import           Data.Maybe                     ( fromMaybe )
 import qualified Data.Map                      as M
 import qualified Data.Set                      as S
 
@@ -58,7 +57,7 @@ setEventuallyContainingBags m b = f S.empty (m M.! b)
     []     -> s  -- no more bags to look at
     c : cs -> if S.member c s  -- if we've already searched from here
       then f s cs       -- then discard and move on
-      else f (S.insert c s) $ fromMaybe [] (M.lookup c m) ++ cs
+      else f (S.insert c s) $ M.findWithDefault [] c m ++ cs
       -- else remember and discard c, and look at all bags containing C
 
 -- Tracks how many bags of each color a bag of a given color must contain.
