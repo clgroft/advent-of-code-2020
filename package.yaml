@@ -23,6 +23,7 @@ dependencies:
   - base >= 4.7 && < 5
   - array >= 0.5.4
   - containers >= 0.6.2.1
+  - split >= 0.2.3.4
 
 library:
   source-dirs: src
