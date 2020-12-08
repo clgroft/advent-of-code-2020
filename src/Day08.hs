@@ -5,21 +5,18 @@ module Day08 where
 import           Control.Monad.State.Strict
 import qualified Data.Array                    as A
 import qualified Data.Set                      as S
--- import           Debug.Trace                    ( traceM )
 
 type PC = Int
 type Accumulator = Int
 type VisitedLines = S.Set Int
 data MachineState = MachineState PC Accumulator VisitedLines
-  deriving Show
 
 initialMachineState :: MachineState
 initialMachineState = MachineState 0 0 S.empty
 
-data Operation = Acc | Jmp | Nop deriving Show
+data Operation = Acc | Jmp | Nop
 type Argument = Int
 data Instruction = Instruction Operation Argument
-  deriving Show
 type InstructionList = A.Array Int Instruction
 
 parseInstruction :: String -> Instruction
@@ -51,14 +48,6 @@ runInstructions instrs = loop
   loop                 = do
     currState <- get
     let MachineState pc acc visitedLines = currState
-    -- traceM
-    --   (  "PC: "
-    --   ++ show pc
-    --   ++ " Acc: "
-    --   ++ show acc
-    --   ++ " Visited: "
-    --   ++ show visitedLines
-    --   )
     if pc > lastInstruction
       then return Normal
       else if pc `S.member` visitedLines
