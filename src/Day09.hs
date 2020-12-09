@@ -31,11 +31,6 @@ findContiguousSum :: Integer -> [Integer] -> Integer
 findContiguousSum n ns = minimum addends + maximum addends
   where addends = findContiguousAddends n ns
 
--- findContiguousSum :: Integer -> [Integer] -> Integer
--- findContiguousSum n ns = firstAddend
---   where
---     neighboringPairs
-
 day09 :: String -> String
 day09 input =
   "First not sum of preceding: "
