@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 466d27aa49a17e43b54ceb40f6043501de4cac092855560a2600b99d0f66ac0d
+-- hash: 983325e639ac4708c2d5d56990356d8123495b937606b19f5de8f0437230234c
 
 name:           advent-of-code-aoc2020
 version:        0.1.0.0
@@ -35,6 +35,7 @@ library
       Day06
       Day07
       Day08
+      Day09
       Lib
   other-modules:
       Paths_advent_of_code_aoc2020
