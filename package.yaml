@@ -24,6 +24,7 @@ dependencies:
   - array >= 0.5.4
   - containers >= 0.6.2.1
   - mtl >= 2.2.2
+  - multiset >= 0.3.4.3
   - split >= 0.2.3.4
 
 library:
