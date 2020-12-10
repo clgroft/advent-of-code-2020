@@ -21,13 +21,12 @@ type Adapter = Int
 allAdapters :: String -> [Adapter]
 allAdapters = (0 :) . sort . map read . lines
 
-count :: (a -> Bool) -> [a] -> Int
-count p = length . filter p
-
 productOneThree :: [Adapter] -> Int
 productOneThree adapters =
   count (== 1) differences * (1 + count (== 3) differences)
-  where differences = zipWith (-) (tail adapters) adapters
+ where
+  differences = zipWith (-) (tail adapters) adapters
+  count p = length . filter p
 
 allArrangements :: [Adapter] -> [(Adapter, Int)]
 allArrangements adapters = foldr f [(last adapters + 3, 1)] adapters
