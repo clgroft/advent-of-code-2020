@@ -4,10 +4,6 @@ module Day12
   ( day12
   ) where
 
-import           Data.List                      ( nub
-                                                , sort
-                                                )
-
 data CompassDirection = N | E | S | W deriving Eq
 data Rotation = R | L deriving Eq
 data Direction = Compass CompassDirection | Rotate Rotation | Forward deriving Eq
@@ -25,10 +21,6 @@ parseDirection 'L' = Rotate L
 parseDirection 'R' = Rotate R
 parseDirection 'F' = Forward
 parseDirection c   = error ("illegal direction " ++ show c)
-
-isRotation :: Direction -> Bool
-isRotation (Rotate _) = True
-isRotation _          = False
 
 parseLine :: String -> Instruction
 parseLine []          = error "empty line"
