@@ -14,6 +14,7 @@ import           Day09                          ( day09 )
 import           Day10                          ( day10 )
 import           Day11                          ( day11 )
 import           Day12                          ( day12 )
+import           Day13                          ( day13 )
 import           Data.Array                     ( Array
                                                 , listArray
                                                 )
@@ -33,4 +34,5 @@ solutions = listArray
   , day10
   , day11
   , day12
+  , day13
   ]
